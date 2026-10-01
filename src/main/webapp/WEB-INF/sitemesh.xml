@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+    <!-- Decorator cho Admin -->
+    <mapping path="/admin/*" decorator="/decorators/admin.jsp"/>
+    <mapping path="/admin" decorator="/decorators/admin.jsp"/>
+
+    <!-- Decorator cho User và Khách -->
+    <mapping path="/*" decorator="/decorators/web.jsp"/>
+
+    <!-- Các đường dẫn không áp dụng decorator -->
+    <mapping path="/image*" exclue="true"/>
+    <mapping path="/assets/*" exclue="true"/>
+    <mapping path="/static/*" exclue="true"/>
+    <mapping path="/uploads/*" exclue="true"/>
+</sitemesh>
+
