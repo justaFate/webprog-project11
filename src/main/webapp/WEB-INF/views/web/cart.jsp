@@ -292,9 +292,12 @@
                                     <span class="fs-4 fw-bold text-danger">${cart.formattedTotalAmount}</span>
                                 </div>
 
-                                <!-- Nút Kích hoạt Modal Thanh Toán -->
-                                <button type="button" class="btn btn-primary w-100 btn-lg shadow fw-bold mb-3" data-bs-toggle="modal" data-bs-target="#checkoutModal">
-                                    <i class="fa-solid fa-credit-card me-2"></i> Tiến Hành Đặt Hàng
+                                <!-- Nút Thanh Toán COD -->
+                                <a href="${pageContext.request.contextPath}/checkout" class="btn btn-success w-100 btn-lg shadow fw-bold mb-2 py-3">
+                                    <i class="fa-solid fa-truck-fast me-2"></i> Thanh Toán Khi Nhận Hàng (COD)
+                                </a>
+                                <button type="button" class="btn btn-outline-primary w-100 mb-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                                    <i class="fa-solid fa-bolt me-1"></i> Đặt hàng nhanh tại đây
                                 </button>
 
                                 <!-- Các cam kết bảo hành / hỗ trợ -->
@@ -371,29 +374,29 @@
     <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <form action="${pageContext.request.contextPath}/cart/checkout" method="post">
+                <form action="${pageContext.request.contextPath}/checkout" method="post" onsubmit="return validateQuickModal()">
                     <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title fw-bold" id="checkoutModalLabel">
-                            <i class="fa-solid fa-file-invoice-dollar me-2"></i> Xác Nhận Thông Tin Đặt Hàng
+                            <i class="fa-solid fa-truck-fast me-2"></i> Đặt Hàng Thanh Toán Khi Nhận Hàng (COD)
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4">
                         <div class="alert alert-info py-2 mb-3">
-                            <i class="fa-solid fa-circle-info me-1"></i> Tổng số lượng: <strong>${cart.totalQuantity} sản phẩm</strong> - Tổng thanh toán: <strong class="text-danger">${cart.formattedTotalAmount}</strong>
+                            <i class="fa-solid fa-circle-info me-1"></i> Tổng số lượng: <strong>${cart.totalQuantity} sản phẩm</strong> - Tiền hàng: <strong class="text-danger">${cart.formattedTotalAmount}</strong>
                         </div>
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Họ và tên người nhận <span class="text-danger">*</span></label>
-                                <input type="text" name="fullname" class="form-control" required 
+                                <input type="text" name="fullname" id="quickFullname" class="form-control" required 
                                        value="${sessionScope.account != null ? sessionScope.account.fullname : ''}" 
                                        placeholder="Nhập họ và tên...">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Số điện thoại <span class="text-danger">*</span></label>
-                                <input type="tel" name="phone" class="form-control" required 
+                                <input type="tel" name="phone" id="quickPhone" class="form-control" required 
                                        value="${sessionScope.account != null ? sessionScope.account.phone : ''}" 
-                                       placeholder="Nhập số điện thoại liên hệ...">
+                                       placeholder="Ví dụ: 0912345678">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Email</label>
@@ -404,10 +407,9 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Phương thức thanh toán</label>
                                 <select name="paymentMethod" class="form-select">
-                                    <option value="Chuyển khoản QR Ngân hàng (Khuyên dùng)">Chuyển khoản QR Ngân hàng (Khuyên dùng)</option>
-                                    <option value="Thanh toán khi nhận hàng (COD)">Thanh toán khi nhận hàng (COD)</option>
+                                    <option value="COD" selected>Thanh toán khi nhận hàng (COD - Tiền mặt)</option>
+                                    <option value="Chuyển khoản QR Ngân hàng">Chuyển khoản QR Ngân hàng</option>
                                     <option value="Ví điện tử MoMo / ZaloPay">Ví điện tử MoMo / ZaloPay</option>
-                                    <option value="Thẻ tín dụng / Ghi nợ quốc tế">Thẻ tín dụng / Ghi nợ quốc tế</option>
                                 </select>
                             </div>
                             <div class="col-12">
@@ -460,6 +462,17 @@
             }
             // Tự động submit form cập nhật
             input.form.submit();
+        }
+
+        function validateQuickModal() {
+            var phone = document.getElementById('quickPhone').value.trim().replace(/\s+/g, '');
+            var phoneRegex = /^(0|\+84)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-9]|9[0-9])[0-9]{7}$/;
+            if (!phoneRegex.test(phone)) {
+                alert('Số điện thoại không hợp lệ! Vui lòng nhập số điện thoại Việt Nam gồm 10 số (ví dụ: 0912345678).');
+                document.getElementById('quickPhone').focus();
+                return false;
+            }
+            return true;
         }
     </script>
 </body>

@@ -12,6 +12,8 @@
         <class>webprog.anhphat_24162091.entities.Video_24162091</class>
         <class>webprog.anhphat_24162091.entities.Favorite_24162091</class>
         <class>webprog.anhphat_24162091.entities.Share_24162091</class>
+        <class>webprog.anhphat_24162091.entities.Order_24162091</class>
+        <class>webprog.anhphat_24162091.entities.OrderDetail_24162091</class>
 
         <properties>
             <!-- Microsoft SQL Server Database Connection -->

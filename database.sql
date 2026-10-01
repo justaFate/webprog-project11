@@ -128,3 +128,46 @@ BEGIN
 END
 GO
 
+-- 6. ORDERS (ĐƠN HÀNG COD)
+IF OBJECT_ID('dbo.OrderDetails', 'U') IS NOT NULL DROP TABLE dbo.OrderDetails;
+IF OBJECT_ID('dbo.Orders', 'U') IS NOT NULL DROP TABLE dbo.Orders;
+
+CREATE TABLE dbo.Orders (
+    OrderId NVARCHAR(50) NOT NULL PRIMARY KEY,
+    OrderDate DATETIME DEFAULT GETDATE(),
+    Fullname NVARCHAR(100) NULL,
+    Phone NVARCHAR(20) NULL,
+    Email NVARCHAR(150) NULL,
+    Address NVARCHAR(500) NULL,
+    Note NVARCHAR(500) NULL,
+    PaymentMethod NVARCHAR(50) DEFAULT 'COD',
+    ShippingFee DECIMAL(18,2) DEFAULT 0,
+    TotalAmount DECIMAL(18,2) NULL,
+    Status NVARCHAR(50) DEFAULT N'Chờ xác nhận (COD)',
+    Username NVARCHAR(50) NULL,
+    CONSTRAINT FK_Orders_Users FOREIGN KEY (Username) REFERENCES dbo.Users(Username) ON DELETE SET NULL
+);
+GO
+
+-- 7. ORDER DETAILS (CHI TIẾT ĐƠN HÀNG)
+CREATE TABLE dbo.OrderDetails (
+    OrderDetailId INT IDENTITY(1,1) PRIMARY KEY,
+    OrderId NVARCHAR(50) NOT NULL,
+    VideoId NVARCHAR(50) NULL,
+    Quantity INT DEFAULT 1,
+    Price DECIMAL(18,2) DEFAULT 0,
+    CONSTRAINT FK_OrderDetails_Orders FOREIGN KEY (OrderId) REFERENCES dbo.Orders(OrderId) ON DELETE CASCADE,
+    CONSTRAINT FK_OrderDetails_Videos FOREIGN KEY (VideoId) REFERENCES dbo.Videos(VideoId) ON DELETE SET NULL
+);
+GO
+
+-- Mẫu dữ liệu đơn hàng COD kiểm thử
+INSERT INTO dbo.Orders (OrderId, OrderDate, Fullname, Phone, Email, Address, Note, PaymentMethod, ShippingFee, TotalAmount, Status, Username) VALUES
+('COD-261001-1001', GETDATE(), N'Nguyễn Văn A', '0987654321', 'user@gmail.com', N'Số 1 Võ Văn Ngân, TP. Thủ Đức, TP. Hồ Chí Minh', N'Giao giờ hành chính, gọi trước 15 phút', 'COD', 0, 448000, N'Chờ xác nhận (COD)', 'user');
+
+INSERT INTO dbo.OrderDetails (OrderId, VideoId, Quantity, Price) VALUES
+('COD-261001-1001', 'V01', 1, 199000),
+('COD-261001-1001', 'V02', 1, 249000);
+GO
+
+

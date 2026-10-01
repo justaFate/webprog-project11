@@ -77,6 +77,12 @@
                                         <li><hr class="dropdown-divider"></li>
                                     </c:if>
                                     <li>
+                                        <a class="dropdown-item fw-semibold" href="${pageContext.request.contextPath}/my-orders">
+                                            <i class="fa-solid fa-clock-rotate-left me-2 text-primary"></i> Đơn Hàng Của Tôi
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
                                         <a class="dropdown-item text-danger" href="${pageContext.request.contextPath}/logout">
                                             <i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Đăng xuất
                                         </a>
